@@ -1,15 +1,14 @@
 package config
 
 import (
-	"github.com/tech-showcase/entertainment-service/presenter"
 	"os"
 	"reflect"
 	"testing"
 )
 
 func TestParse(t *testing.T) {
-	expectedOutput := presenter.Config{
-		Movie: presenter.Movie{
+	expectedOutput := Config{
+		Movie: Movie{
 			ServerAddress: "http://dummy.address/",
 			ApiKey:        "dummy-key",
 		},

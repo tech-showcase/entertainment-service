@@ -2,12 +2,22 @@ package config
 
 import (
 	"encoding/json"
-	"github.com/tech-showcase/entertainment-service/presenter"
 	"io/ioutil"
 	"os"
 )
 
-func Parse() (config presenter.Config, err error) {
+type (
+	Config struct {
+		Movie Movie `json:"movie"`
+	}
+
+	Movie struct {
+		ServerAddress string `json:"server_address"`
+		ApiKey        string `json:"api_key"`
+	}
+)
+
+func Parse() (config Config, err error) {
 	configPath := GetPath()
 
 	configFileContent, err := ioutil.ReadFile(configPath)
