@@ -8,7 +8,7 @@ import (
 )
 
 type (
-	SearchMovieResponse struct {
+	MovieListPerPage struct {
 		Response     string      `json:"Response"`
 		Search       []MovieItem `json:"Search"`
 		TotalResults string      `json:"totalResults"`
@@ -27,7 +27,7 @@ type (
 		apiKey        string
 	}
 	MovieInterface interface {
-		Search(string, int) (SearchMovieResponse, error)
+		Search(string, int) (MovieListPerPage, error)
 	}
 )
 
@@ -39,7 +39,7 @@ func NewMovieModel(serverAddress string, apiKey string) MovieInterface {
 	return &instance
 }
 
-func (instance *MovieBlueprint) Search(keyword string, pageNumber int) (movies SearchMovieResponse, err error) {
+func (instance *MovieBlueprint) Search(keyword string, pageNumber int) (movies MovieListPerPage, err error) {
 	req, err := http.NewRequest("GET", instance.serverAddress, nil)
 	if err != nil {
 		return
