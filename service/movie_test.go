@@ -69,7 +69,7 @@ func TestMovieService_Search(t *testing.T) {
 		_, err := movieService.Search("Batman", 2)
 
 		if err == nil {
-			t.Fatal("unexpected output")
+			t.Fatal("an error should occur")
 		}
 	})
 }
