@@ -1,9 +1,7 @@
 package config
 
 import (
-	"encoding/json"
-	"io/ioutil"
-	"os"
+	"github.com/spf13/viper"
 )
 
 type (
@@ -17,32 +15,46 @@ type (
 	}
 )
 
+func init() {
+	viper.SetDefault("CONFIG_FILEPATH", ".")
+	viper.BindEnv("CONFIG_FILEPATH")
+	viper.SetDefault("CONFIG_FILENAME", ".env")
+	viper.BindEnv("CONFIG_FILENAME")
+
+	viper.SetDefault("MOVIE_SERVER_ADDRESS", "http://localhost")
+	viper.BindEnv("MOVIE_SERVER_ADDRESS")
+	viper.SetDefault("MOVIE_API_KEY", "api-key")
+	viper.BindEnv("MOVIE_API_KEY")
+
+}
+
 func Parse() (config Config, err error) {
-	configPath := GetPath()
+	configFilepath, cofigFilename := getConfigFile()
+	viper.SetConfigName(cofigFilename)
+	viper.SetConfigType("env")
+	viper.AddConfigPath(configFilepath)
 
-	configFileContent, err := ioutil.ReadFile(configPath)
+	err = viper.ReadInConfig()
 	if err != nil {
 		return
 	}
 
-	err = json.Unmarshal(configFileContent, &config)
-	if err != nil {
-		return
-	}
-
+	config = getConfig()
 	return
 }
 
-func GetPath() string {
-	environment := "DEV"
-	if environmentFromEnvVar := os.Getenv("ENVIRONMENT"); environmentFromEnvVar != "" {
-		environment = environmentFromEnvVar
-	}
+func getConfigFile() (configFilepath string, configFilename string) {
+	configFilepath = viper.Get("CONFIG_FILEPATH").(string)
+	configFilename = viper.Get("CONFIG_FILENAME").(string)
+	return
+}
 
-	configPath := "config/config-dev.json"
-	if configPathFromEnvVar := os.Getenv(environment + "_CONFIG_PATH"); configPathFromEnvVar != "" {
-		configPath = configPathFromEnvVar
+func getConfig() (config Config) {
+	config = Config{
+		Movie: Movie{
+			ServerAddress: viper.Get("MOVIE_SERVER_ADDRESS").(string),
+			ApiKey:        viper.Get("MOVIE_API_KEY").(string),
+		},
 	}
-
-	return configPath
+	return
 }
