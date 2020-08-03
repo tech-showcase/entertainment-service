@@ -45,7 +45,7 @@ func EncodeSearchMovieResponse(_ context.Context, r interface{}) (interface{}, e
 				Title:  item.Title,
 				Type:   item.Type,
 				Year:   item.Year,
-				ImdbID: item.ImdbID,
+				ImdbId: item.ImdbID,
 			}
 			movies = append(movies, &movie)
 		}
