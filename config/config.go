@@ -15,6 +15,8 @@ type (
 	}
 )
 
+var Instance Config
+
 func init() {
 	viper.SetDefault("CONFIG_FILEPATH", ".")
 	viper.BindEnv("CONFIG_FILEPATH")
@@ -25,12 +27,11 @@ func init() {
 	viper.BindEnv("MOVIE_SERVER_ADDRESS")
 	viper.SetDefault("MOVIE_API_KEY", "api-key")
 	viper.BindEnv("MOVIE_API_KEY")
-
 }
 
 func Parse() (config Config, err error) {
-	configFilepath, cofigFilename := getConfigFile()
-	viper.SetConfigName(cofigFilename)
+	configFilepath, configFilename := getConfigFile()
+	viper.SetConfigName(configFilename)
 	viper.SetConfigType("env")
 	viper.AddConfigPath(configFilepath)
 
