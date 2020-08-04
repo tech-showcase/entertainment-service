@@ -6,22 +6,22 @@ import (
 
 type (
 	movieService struct {
-		movieModel model.MovieInterface
+		movieRepo model.MovieRepo
 	}
 	MovieService interface {
 		Search(string, int) (model.MovieListPerPage, error)
 	}
 )
 
-func NewMovieService(movieModel model.MovieInterface) MovieService {
+func NewMovieService(movieRepo model.MovieRepo) MovieService {
 	instance := movieService{}
-	instance.movieModel = movieModel
+	instance.movieRepo = movieRepo
 
 	return &instance
 }
 
 func (instance *movieService) Search(keyword string, pageNumber int) (movieData model.MovieListPerPage, err error) {
-	movieData, err = instance.movieModel.Search(keyword, pageNumber)
+	movieData, err = instance.movieRepo.Search(keyword, pageNumber)
 	if err != nil {
 		return
 	}

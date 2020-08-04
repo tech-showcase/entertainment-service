@@ -13,7 +13,6 @@ type (
 		Search       []MovieItem `json:"Search"`
 		TotalResults string      `json:"totalResults"`
 	}
-
 	MovieItem struct {
 		Poster string `json:"Poster"`
 		Title  string `json:"Title"`
@@ -22,24 +21,24 @@ type (
 		ImdbID string `json:"imdbID"`
 	}
 
-	MovieBlueprint struct {
+	movieRepo struct {
 		serverAddress string
 		apiKey        string
 	}
-	MovieInterface interface {
-		Search(string, int) (MovieListPerPage, error)
+	MovieRepo interface {
+		Search(keyword string, pageNumber int) (movies MovieListPerPage, err error)
 	}
 )
 
-func NewMovieModel(serverAddress string, apiKey string) MovieInterface {
-	instance := MovieBlueprint{}
+func NewMovieModel(serverAddress string, apiKey string) MovieRepo {
+	instance := movieRepo{}
 	instance.serverAddress = serverAddress
 	instance.apiKey = apiKey
 
 	return &instance
 }
 
-func (instance *MovieBlueprint) Search(keyword string, pageNumber int) (movies MovieListPerPage, err error) {
+func (instance *movieRepo) Search(keyword string, pageNumber int) (movies MovieListPerPage, err error) {
 	req, err := http.NewRequest("GET", instance.serverAddress, nil)
 	if err != nil {
 		return
