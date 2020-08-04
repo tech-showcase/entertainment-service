@@ -3,6 +3,7 @@ package transport
 import (
 	"context"
 	grpctransport "github.com/go-kit/kit/transport/grpc"
+	movieEndpoint "github.com/tech-showcase/entertainment-service/endpoint/movie"
 	movieProto "github.com/tech-showcase/entertainment-service/proto/movie"
 )
 
@@ -12,13 +13,12 @@ type (
 	}
 )
 
-func NewMovieGRPCServer(ctx context.Context, endpoints MovieEndpoints) movieProto.MovieServer {
+func NewMovieGRPCServer(endpoint movieEndpoint.Endpoint) movieProto.MovieServer {
 	instance := movieGRPCServer{}
 	instance.searchHandler = grpctransport.NewServer(
-		endpoints.SearchMovieEndpoint,
-		DecodeSearchMovieRequest,
-		EncodeSearchMovieResponse,
-	)
+		endpoint.Search.Endpoint,
+		endpoint.Search.Decoder,
+		endpoint.Search.Encoder)
 
 	return &instance
 }

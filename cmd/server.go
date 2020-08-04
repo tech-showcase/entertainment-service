@@ -1,9 +1,9 @@
 package cmd
 
 import (
-	"context"
 	"fmt"
 	"github.com/spf13/cobra"
+	movieEndpoint "github.com/tech-showcase/entertainment-service/endpoint/movie"
 	"github.com/tech-showcase/entertainment-service/global"
 	"github.com/tech-showcase/entertainment-service/model"
 	movieProto "github.com/tech-showcase/entertainment-service/proto/movie"
@@ -26,17 +26,13 @@ var (
 		Use:   "server",
 		Short: "Run web server",
 		Run: func(cmd *cobra.Command, args []string) {
-			ctx := context.Background()
-
 			config := global.Configuration.Movie
 			movieModel := model.NewMovieModel(config.ServerAddress, config.ApiKey)
 			movieService := service.NewMovieService(movieModel)
-			movieEndpoints := transport.MovieEndpoints{
-				SearchMovieEndpoint: transport.MakeSearchMovieEndpoint(movieService),
-			}
+			movieEndpoints := movieEndpoint.NewMovieEndpoint(movieService)
 
 			gRPCServer := grpc.NewServer()
-			movieHandler := transport.NewMovieGRPCServer(ctx, movieEndpoints)
+			movieHandler := transport.NewMovieGRPCServer(movieEndpoints)
 			movieProto.RegisterMovieServer(gRPCServer, movieHandler)
 
 			portStr := fmt.Sprintf(":%d", serverFlags.Port)
