@@ -32,3 +32,9 @@ MOVIE_API_KEY=faf7e5bb
 $ docker build -t entertainment-service .
 $ docker run -p 8082:8080 entertainment-service
 ```
+
+### Tech / Dependency
+- [Go kit - service](https://github.com/go-kit/kit)
+- [Cobra - cli app](https://github.com/spf13/cobra)
+- [Viper - config](https://github.com/spf13/viper)
+- [gRPC - api](https://grpc.io/)
