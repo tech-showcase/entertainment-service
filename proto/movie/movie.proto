@@ -19,7 +19,7 @@ message SearchResponse {
     string poster = 5;
   }
 
-  repeated MovieItem Search = 1;
+  repeated MovieItem search = 1;
   string total_results = 2;
   string response = 3;
 }
