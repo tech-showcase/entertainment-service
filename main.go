@@ -17,5 +17,8 @@ func init() {
 func main() {
 	fmt.Println("Hi, I am Entertainment Service!")
 
-	cmd.Execute()
+	err := cmd.Execute()
+	if err != nil {
+		panic(err)
+	}
 }
