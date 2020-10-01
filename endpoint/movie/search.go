@@ -25,7 +25,7 @@ func makeSearchMovieEndpoint(svc service.MovieService) endpoint.Endpoint {
 
 		movieData, err := svc.Search(req.Keyword, req.PageNumber)
 		if err != nil {
-			return SearchMovieResponse{}, nil
+			return SearchMovieResponse{}, err
 		}
 		return SearchMovieResponse{MovieListPerPage: movieData}, nil
 	}
