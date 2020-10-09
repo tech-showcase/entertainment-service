@@ -3,7 +3,6 @@ package helper
 import (
 	"context"
 	"encoding/base64"
-	"github.com/davecgh/go-spew/spew"
 	"github.com/go-kit/kit/log"
 	stdopentracing "github.com/opentracing/opentracing-go"
 	"github.com/opentracing/opentracing-go/ext"
@@ -23,10 +22,10 @@ func GRPCToContext(tracer stdopentracing.Tracer, operationName string, logger lo
 		if err != nil && err != stdopentracing.ErrSpanContextNotFound {
 			logger.Log("err", err)
 		}
-		spew.Dump(wireContext)
+
 		span = tracer.StartSpan(operationName, ext.RPCServerOption(wireContext))
 		defer span.Finish()
-		spew.Dump(span)
+
 		return stdopentracing.ContextWithSpan(ctx, span)
 	}
 }
