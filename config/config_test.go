@@ -13,6 +13,9 @@ func TestParse(t *testing.T) {
 			ServerAddress: "http://dummy.address/",
 			ApiKey:        "dummy-api-key",
 		},
+		Tracer: Tracer{
+			AgentAddress: "dummy-agent-address",
+		},
 	}
 
 	os.Setenv("CONFIG_FILEPATH", "..")
