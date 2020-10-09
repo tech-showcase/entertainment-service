@@ -10,7 +10,7 @@ import (
 
 var TracerInstance stdopentracing.Tracer
 
-func NewTracer(serviceName string) (stdopentracing.Tracer, io.Closer, error) {
+func NewTracer(serviceName string, agentAddress string) (stdopentracing.Tracer, io.Closer, error) {
 	cfg := config.Configuration{
 		ServiceName: serviceName,
 		Sampler: &config.SamplerConfig{
@@ -20,7 +20,7 @@ func NewTracer(serviceName string) (stdopentracing.Tracer, io.Closer, error) {
 		Reporter: &config.ReporterConfig{
 			LogSpans:            true,
 			BufferFlushInterval: 1 * time.Second,
-			LocalAgentHostPort:  "localhost:5775",
+			LocalAgentHostPort:  agentAddress,
 		},
 	}
 

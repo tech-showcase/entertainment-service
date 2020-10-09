@@ -16,7 +16,7 @@ func init() {
 
 	helper.LoggerInstance = helper.NewLogger()
 
-	helper.TracerInstance, _, err = helper.NewTracer(config.Instance.ServiceName)
+	helper.TracerInstance, _, err = helper.NewTracer(config.Instance.ServiceName, config.Instance.Tracer.AgentAddress)
 	if err != nil {
 		helper.LoggerInstance.Log("NewTracer", err)
 	}
