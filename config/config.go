@@ -6,7 +6,8 @@ import (
 
 type (
 	Config struct {
-		Movie Movie `json:"movie"`
+		ServiceName string `json:"service_name"`
+		Movie       Movie  `json:"movie"`
 	}
 
 	Movie struct {
@@ -23,6 +24,8 @@ func init() {
 	viper.SetDefault("CONFIG_FILENAME", ".env")
 	viper.BindEnv("CONFIG_FILENAME")
 
+	viper.SetDefault("SERVICE_NAME", "entertainment-service")
+	viper.BindEnv("SERVICE_NAME")
 	viper.SetDefault("MOVIE_SERVER_ADDRESS", "http://localhost")
 	viper.BindEnv("MOVIE_SERVER_ADDRESS")
 	viper.SetDefault("MOVIE_API_KEY", "api-key")
@@ -52,6 +55,7 @@ func getConfigFile() (configFilepath string, configFilename string) {
 
 func getConfig() (config Config) {
 	config = Config{
+		ServiceName: viper.Get("SERVICE_NAME").(string),
 		Movie: Movie{
 			ServerAddress: viper.Get("MOVIE_SERVER_ADDRESS").(string),
 			ApiKey:        viper.Get("MOVIE_API_KEY").(string),

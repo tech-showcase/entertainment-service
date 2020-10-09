@@ -8,6 +8,7 @@ import (
 
 func TestParse(t *testing.T) {
 	expectedOutput := Config{
+		ServiceName: "dummy-service-name",
 		Movie: Movie{
 			ServerAddress: "http://dummy.address/",
 			ApiKey:        "dummy-api-key",
