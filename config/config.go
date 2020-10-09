@@ -37,7 +37,7 @@ func init() {
 	viper.SetDefault("MOVIE_API_KEY", "api-key")
 	viper.BindEnv("MOVIE_API_KEY")
 
-	viper.SetDefault("TRACER_AGENT_ADDRESS", "localhost")
+	viper.SetDefault("TRACER_AGENT_ADDRESS", "localhost:5775")
 	viper.BindEnv("TRACER_AGENT_ADDRESS")
 }
 
