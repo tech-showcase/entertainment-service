@@ -14,7 +14,7 @@ func TestParse(t *testing.T) {
 			ApiKey:        "dummy-api-key",
 		},
 		Tracer: Tracer{
-			AgentAddress: "dummy-agent-address",
+			AgentAddress: "dummy-tracer-agent-address",
 		},
 	}
 
