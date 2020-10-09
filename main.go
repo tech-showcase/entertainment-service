@@ -15,7 +15,7 @@ func init() {
 }
 
 func main() {
-	fmt.Println("Hi, I am Entertainment Service!")
+	fmt.Println("Hi, I am " + config.Instance.ServiceName + "!")
 
 	err := cmd.Execute()
 	if err != nil {
