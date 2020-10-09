@@ -20,8 +20,10 @@ You can use gRPC by:
 - Install docker
 - Create config file `.env` under root dir which contains following content
 ```
+SERVICE_NAME=entertainment-service
 MOVIE_SERVER_ADDRESS=http://www.omdbapi.com/
 MOVIE_API_KEY=faf7e5bb
+TRACER_AGENT_ADDRESS=localhost:5775
 ```
 - Fill env var `CONFIG_FILEPATH` with directory path where config file is contained
 - Fill env var `CONFIG_FILENAME` with the name of config file (e.g `.env`)
