@@ -1,7 +1,9 @@
 package movie
 
 import (
+	stdopentracing "github.com/opentracing/opentracing-go"
 	generalEndpoint "github.com/tech-showcase/entertainment-service/endpoint"
+	"github.com/tech-showcase/entertainment-service/middleware"
 	"github.com/tech-showcase/entertainment-service/service"
 )
 
@@ -11,13 +13,16 @@ type (
 	}
 )
 
-func NewMovieEndpoint(svc service.MovieService) Endpoint {
-	instance := Endpoint{}
-	instance.Search = generalEndpoint.GRPCEndpoint{
-		Endpoint: makeSearchMovieEndpoint(svc),
+func NewMovieEndpoint(svc service.MovieService, tracer stdopentracing.Tracer) Endpoint {
+	movieEndpoint := Endpoint{}
+
+	searchMovieEndpoint := makeSearchMovieEndpoint(svc)
+	searchMovieEndpoint = middleware.ApplyTracerClient("searchMovie-endpoint", searchMovieEndpoint, tracer)
+	movieEndpoint.Search = generalEndpoint.GRPCEndpoint{
+		Endpoint: searchMovieEndpoint,
 		Decoder:  decodeSearchMovieRequest,
 		Encoder:  encodeSearchMovieResponse,
 	}
 
-	return instance
+	return movieEndpoint
 }
