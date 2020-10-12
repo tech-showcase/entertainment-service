@@ -30,7 +30,7 @@ TRACER_AGENT_ADDRESS=localhost:5775
 - Build and run docker image as below
 ```shell script
 $ docker build -t entertainment-service .
-$ docker run -p 8082:8080 entertainment-service
+$ docker run -p 8082:8080 entertainment-service server
 ```
 
 ### Tech / Dependency
