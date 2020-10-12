@@ -49,11 +49,13 @@ func Parse() (config Config, err error) {
 
 	err = viper.ReadInConfig()
 	if err != nil {
-		return
+		if _, ok := err.(viper.ConfigFileNotFoundError); !ok {
+			return
+		}
 	}
 
 	config = getConfig()
-	return
+	return config, nil
 }
 
 func getConfigFile() (configFilepath string, configFilename string) {
