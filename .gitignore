@@ -19,3 +19,6 @@
 
 # Config file
 .env
+
+# Log file
+*.log
