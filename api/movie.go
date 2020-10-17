@@ -18,7 +18,7 @@ func RegisterMovieGRPCAPI(gRPCServer *grpc.Server) {
 
 	movieModel := model.NewMovieModel(configuration.Movie.ServerAddress, configuration.Movie.ApiKey)
 	movieService := service.NewMovieService(movieModel)
-	movieEndpoints := movieEndpoint.NewMovieEndpoint(movieService, tracerInstance)
+	movieEndpoints := movieEndpoint.NewMovieEndpoint(movieService, loggerInstance, tracerInstance)
 	movieHandler := transport.NewMovieGRPCServer(movieEndpoints, loggerInstance, tracerInstance)
 	movieProto.RegisterMovieServer(gRPCServer, movieHandler)
 }

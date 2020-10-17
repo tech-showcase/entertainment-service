@@ -14,7 +14,11 @@ func init() {
 		panic(err)
 	}
 
-	helper.LoggerInstance = helper.NewLogger()
+	//helper.LoggerInstance = helper.NewLogger()
+	helper.LoggerInstance, err = helper.NewFileLogger(config.Instance.Log.Filepath)
+	if err != nil {
+		panic(err)
+	}
 
 	helper.TracerInstance, _, err = helper.NewTracer(config.Instance.ServiceName, config.Instance.Tracer.AgentAddress)
 	if err != nil {
