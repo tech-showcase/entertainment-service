@@ -9,6 +9,7 @@ type (
 		ServiceName string `json:"service_name"`
 		Movie       Movie  `json:"movie"`
 		Tracer      Tracer `json:"tracer"`
+		Log         Log    `json:"log"`
 	}
 
 	Movie struct {
@@ -18,6 +19,10 @@ type (
 
 	Tracer struct {
 		AgentAddress string `json:"agent_address"`
+	}
+
+	Log struct {
+		Filepath string `json:"filepath"`
 	}
 )
 
@@ -39,6 +44,9 @@ func init() {
 
 	viper.SetDefault("TRACER_AGENT_ADDRESS", "localhost:5775")
 	viper.BindEnv("TRACER_AGENT_ADDRESS")
+
+	viper.SetDefault("LOG_FILEPATH", "./server.log")
+	viper.BindEnv("LOG_FILEPATH")
 }
 
 func Parse() (config Config, err error) {
@@ -73,6 +81,9 @@ func getConfig() (config Config) {
 		},
 		Tracer: Tracer{
 			AgentAddress: viper.Get("TRACER_AGENT_ADDRESS").(string),
+		},
+		Log: Log{
+			Filepath: viper.Get("LOG_FILEPATH").(string),
 		},
 	}
 	return

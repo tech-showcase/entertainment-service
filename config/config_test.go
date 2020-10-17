@@ -16,6 +16,9 @@ func TestParse(t *testing.T) {
 		Tracer: Tracer{
 			AgentAddress: "dummy-tracer-agent-address",
 		},
+		Log: Log{
+			Filepath: "dummy-filepath",
+		},
 	}
 
 	os.Setenv("CONFIG_FILEPATH", "..")
