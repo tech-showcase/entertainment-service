@@ -7,13 +7,15 @@ services:
     ports:
       - 8085:8080
     networks:
+      - entertainment-service
       - service-discovery
+      - observability
     environment:
       MOVIE_SERVER_ADDRESS: http://www.omdbapi.com/
       MOVIE_API_KEY: faf7e5bb
       TRACER_AGENT_ADDRESS: jaeger-tracing:5775
-    depends_on:
-      - consul-server
+#    depends_on:
+#      - consul-server
 
   entertainment-service-2:
     image: entertainment-service
@@ -21,24 +23,32 @@ services:
     ports:
       - 8084:8080
     networks:
+      - entertainment-service
       - service-discovery
+      - observability
     environment:
       MOVIE_SERVER_ADDRESS: http://www.omdbapi.com/
       MOVIE_API_KEY: faf7e5bb
       TRACER_AGENT_ADDRESS: jaeger-tracing:5775
-    depends_on:
-      - consul-server
+#    depends_on:
+#      - consul-server
 
   consul-client:
     image: consul:1.8
     container_name: consul-client
     command: agent -node=client-1 -join=consul-server
     networks:
+#      - entertainment-service
       - service-discovery
-    depends_on:
-      - consul-server
+#    depends_on:
+#      - consul-server
 
 networks:
+  entertainment-service:
+    driver: bridge
   service-discovery:
     external:
       name: service-discovery_service-discovery
+  observability:
+    external:
+      name: observability_observability
