@@ -10,12 +10,25 @@ services:
       - entertainment-service
       - service-discovery
       - observability
+    volumes:
+      - entertainment-service-log:/log
     environment:
       MOVIE_SERVER_ADDRESS: http://www.omdbapi.com/
       MOVIE_API_KEY: faf7e5bb
       TRACER_AGENT_ADDRESS: jaeger-tracing:5775
+      LOG_FILEPATH: /log/server.log
 #    depends_on:
 #      - consul-server
+
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:7.7.0
+    volumes:
+      - ./deployment/elastic-stack/filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml
+      - entertainment-service-log:/log
+    networks:
+      - observability
+    depends_on:
+      - entertainment-service
 
   entertainment-service-2:
     image: entertainment-service
@@ -26,22 +39,40 @@ services:
       - entertainment-service
       - service-discovery
       - observability
+    volumes:
+      - entertainment-service-log-2:/log
     environment:
       MOVIE_SERVER_ADDRESS: http://www.omdbapi.com/
       MOVIE_API_KEY: faf7e5bb
       TRACER_AGENT_ADDRESS: jaeger-tracing:5775
+      LOG_FILEPATH: /log/server.log
 #    depends_on:
 #      - consul-server
+
+  filebeat-2:
+    image: docker.elastic.co/beats/filebeat:7.7.0
+    volumes:
+      - ./deployment/elastic-stack/filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml
+      - entertainment-service-log-2:/log
+    networks:
+      - observability
+    depends_on:
+      - entertainment-service-2
 
   consul-client:
     image: consul:1.8
     container_name: consul-client
     command: agent -node=client-1 -join=consul-server
     networks:
-#      - entertainment-service
       - service-discovery
 #    depends_on:
 #      - consul-server
+
+volumes:
+  entertainment-service-log:
+    driver: local
+  entertainment-service-log-2:
+    driver: local
 
 networks:
   entertainment-service:
