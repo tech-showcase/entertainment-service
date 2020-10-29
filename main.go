@@ -24,6 +24,17 @@ func init() {
 	if err != nil {
 		helper.LoggerInstance.Log("NewTracer", err)
 	}
+
+	consulClient, err := helper.NewConsulClient(config.Instance.Consul.AgentAddress)
+	if err != nil {
+		panic(err)
+	}
+	helper.RegistrarInstance = helper.NewConsulRegistrar(
+		consulClient,
+		config.Instance.ServiceName,
+		config.Instance.Consul.Service,
+		helper.LoggerInstance,
+	)
 }
 
 func main() {
