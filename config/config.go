@@ -10,6 +10,7 @@ type (
 		Movie       Movie  `json:"movie"`
 		Tracer      Tracer `json:"tracer"`
 		Log         Log    `json:"log"`
+		Consul      Consul `json:"consul"`
 	}
 
 	Movie struct {
@@ -23,6 +24,17 @@ type (
 
 	Log struct {
 		Filepath string `json:"filepath"`
+	}
+
+	Consul struct {
+		AgentAddress string        `json:"agent_address"`
+		Service      ConsulService `json:"service"`
+	}
+
+	ConsulService struct {
+		ID      string `json:"id"`
+		Address string `json:"address"`
+		Port    int    `json:"port"`
 	}
 )
 
@@ -47,6 +59,15 @@ func init() {
 
 	viper.SetDefault("LOG_FILEPATH", "./server.log")
 	viper.BindEnv("LOG_FILEPATH")
+
+	viper.SetDefault("CONSUL_AGENT_ADDRESS", "localhost:8500")
+	viper.BindEnv("CONSUL_AGENT_ADDRESS")
+	viper.SetDefault("CONSUL_SERVICE_ID", "entertainment-service")
+	viper.BindEnv("CONSUL_SERVICE_ID")
+	viper.SetDefault("CONSUL_SERVICE_ADDRESS", "localhost")
+	viper.BindEnv("CONSUL_SERVICE_ADDRESS")
+	viper.SetDefault("CONSUL_SERVICE_PORT", "8080")
+	viper.BindEnv("CONSUL_SERVICE_PORT")
 }
 
 func Parse() (config Config, err error) {
@@ -67,23 +88,31 @@ func Parse() (config Config, err error) {
 }
 
 func getConfigFile() (configFilepath string, configFilename string) {
-	configFilepath = viper.Get("CONFIG_FILEPATH").(string)
-	configFilename = viper.Get("CONFIG_FILENAME").(string)
+	configFilepath = viper.GetString("CONFIG_FILEPATH")
+	configFilename = viper.GetString("CONFIG_FILENAME")
 	return
 }
 
 func getConfig() (config Config) {
 	config = Config{
-		ServiceName: viper.Get("SERVICE_NAME").(string),
+		ServiceName: viper.GetString("SERVICE_NAME"),
 		Movie: Movie{
-			ServerAddress: viper.Get("MOVIE_SERVER_ADDRESS").(string),
-			ApiKey:        viper.Get("MOVIE_API_KEY").(string),
+			ServerAddress: viper.GetString("MOVIE_SERVER_ADDRESS"),
+			ApiKey:        viper.GetString("MOVIE_API_KEY"),
 		},
 		Tracer: Tracer{
-			AgentAddress: viper.Get("TRACER_AGENT_ADDRESS").(string),
+			AgentAddress: viper.GetString("TRACER_AGENT_ADDRESS"),
 		},
 		Log: Log{
-			Filepath: viper.Get("LOG_FILEPATH").(string),
+			Filepath: viper.GetString("LOG_FILEPATH"),
+		},
+		Consul: Consul{
+			AgentAddress: viper.GetString("CONSUL_AGENT_ADDRESS"),
+			Service: ConsulService{
+				ID:      viper.GetString("CONSUL_SERVICE_ID"),
+				Address: viper.GetString("CONSUL_SERVICE_ADDRESS"),
+				Port:    viper.GetInt("CONSUL_SERVICE_PORT"),
+			},
 		},
 	}
 	return

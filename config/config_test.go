@@ -19,6 +19,14 @@ func TestParse(t *testing.T) {
 		Log: Log{
 			Filepath: "dummy-filepath",
 		},
+		Consul: Consul{
+			AgentAddress: "dummy-address",
+			Service: ConsulService{
+				ID:      "dummy-id",
+				Address: "dummy-address",
+				Port:    8080,
+			},
+		},
 	}
 
 	os.Setenv("CONFIG_FILEPATH", "..")
