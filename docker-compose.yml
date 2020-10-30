@@ -17,6 +17,10 @@ services:
       MOVIE_API_KEY: faf7e5bb
       TRACER_AGENT_ADDRESS: jaeger-tracing:5775
       LOG_FILEPATH: /log/server.log
+      CONSUL_AGENT_ADDRESS: consul-client:8500
+      CONSUL_SERVICE_ID: entertainment-service
+      CONSUL_SERVICE_ADDRESS: entertainment-service
+      CONSUL_SERVICE_PORT: 8080
 #    depends_on:
 #      - consul-server
 
@@ -46,6 +50,10 @@ services:
       MOVIE_API_KEY: faf7e5bb
       TRACER_AGENT_ADDRESS: jaeger-tracing:5775
       LOG_FILEPATH: /log/server.log
+      CONSUL_AGENT_ADDRESS: consul-client:8500
+      CONSUL_SERVICE_ID: entertainment-service-2
+      CONSUL_SERVICE_ADDRESS: entertainment-service-2
+      CONSUL_SERVICE_PORT: 8080
 #    depends_on:
 #      - consul-server
 
@@ -62,9 +70,11 @@ services:
   consul-client:
     image: consul:1.8
     container_name: consul-client
-    command: agent -node=client-1 -join=consul-server
+    command: agent -node=client-1 -join=consul-server -client=0.0.0.0
     networks:
       - service-discovery
+    ports:
+      - 8501:8500
 #    depends_on:
 #      - consul-server
 
