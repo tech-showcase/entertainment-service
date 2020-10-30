@@ -20,6 +20,7 @@ func NewMovieEndpoint(svc service.MovieService, logger log.Logger, tracer stdope
 	searchMovieEndpoint := makeSearchMovieEndpoint(svc)
 	searchMovieEndpoint = middleware.ApplyTracerClient("searchMovie-endpoint", searchMovieEndpoint, tracer)
 	searchMovieEndpoint = middleware.ApplyLogger("searchMovie", searchMovieEndpoint, logger)
+	searchMovieEndpoint = middleware.ApplyMetrics("movie", "search", searchMovieEndpoint)
 	movieEndpoint.Search = generalEndpoint.GRPCEndpoint{
 		Endpoint: searchMovieEndpoint,
 		Decoder:  decodeSearchMovieRequest,
